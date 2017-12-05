@@ -21,12 +21,12 @@ int main()
 
         double temp = 0.3;
 
-        //Xsection_2to2 xQq2Qq(&dX_Qq2Qq_dPS, &approx_XQq2Qq, M, "XQq2Qq.hdf5", false);
-        //Xsection_2to2 xQg2Qg(&dX_Qg2Qg_dPS, &approx_XQg2Qg, M, "XQg2Qg.hdf5", false);
-        //rates_2to2 rQq2Qq(&xQq2Qq, 36, 0., "rQq2Qq.hdf5", false);
-        //rates_2to2 rQg2Qg(&xQg2Qg, 16, 0., "rQg2Qg.hdf5", false);
-
         bool refresh = true;
+        Xsection_2to2 xQq2Qq(&dX_Qq2Qq_dPS, &approx_XQq2Qq, M, "XQq2Qq.hdf5", refresh);
+        Xsection_2to2 xQg2Qg(&dX_Qg2Qg_dPS, &approx_XQg2Qg, M, "XQg2Qg.hdf5", refresh);
+        rates_2to2 rQq2Qq(&xQq2Qq, 36, 0., "rQq2Qq.hdf5", refresh);
+        rates_2to2 rQg2Qg(&xQg2Qg, 16, 0., "rQg2Qg.hdf5", refresh);
+
         QhatXsection_2to2 qhat_xQq2Qq(&dqhat_Qq2Qq_dPS, &approx_XQq2Qq, M, "qhat_XQq2Qq.hdf5", refresh);
         QhatXsection_2to2 qhat_xQg2Qg(&dqhat_Qg2Qg_dPS, &approx_XQg2Qg, M, "qhat_XQg2Qg.hdf5", refresh);
         Qhat_2to2 qhatQq2Qq(&qhat_xQq2Qq, 36, 0., "qhat_Qq2Qq.hdf5", refresh);

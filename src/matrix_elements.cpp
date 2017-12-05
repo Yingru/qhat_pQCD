@@ -7,15 +7,15 @@
 
 //=============running coupling=================================================
 double alpha_s(double Q2){
-/*!
+
     if (Q2 < Q2cut_l)
         return alpha0 / std::log( -Q2/Lambda2 );
     else if (Q2 <= Q2cut_h)
         return 1.0;
     else
         return alpha0 * ( .5 - std::atan( std::log(Q2/Lambda2)/M_PI ) / M_PI );
-!*/
-        return 0.3;
+
+//        return 0.3;
 }
 
 
@@ -35,8 +35,8 @@ double M2_Qq2Qq(double t, void * params){
 	// define coupling constant for each channel
 	double At = alpha_s(Q2t);
 	// define Deybe mass for each channel
-	//!double mt2 = 0.2*At*pf_g*T2;
-        double mt2 = 4 * M_PI * At * T2;
+	// Ours  double mt2 = 0.2*At*pf_g*T2;
+     double mt2 = 4 * M_PI * At * T2;
 	double result = c64d9pi2*At*At*(Q2u*Q2u + Q2s*Q2s + 2.*M2*Q2t)/std::pow(Q2t - mt2, 2);
 	if (result < 0.) return 0.;
 	else return result;
@@ -66,8 +66,8 @@ double M2_Qg2Qg(double t, void * params) {
 	// define coupling constant for each channel
 	double At = alpha_s(Q2t), Au = alpha_s(Q2u), As = alpha_s(Q2s);
 	// define Deybe mass for each channel
-	//!double mt2 = 0.2*At*pf_g*T2, mu2 = Au*pf_q*T2, ms2 = As*pf_q*T2;
-        double mt2 = 4*M_PI*At*T2, mu2 = 4*M_PI*Au*T2, ms2 = 4*M_PI*As*T2;
+ 	// ours double mt2 = 0.2*At*pf_g*T2, mu2 = Au*pf_q*T2, ms2 = As*pf_q*T2;
+    double mt2 = 4*M_PI*At*T2, mu2 = 4*M_PI*Au*T2, ms2 = 4*M_PI*As*T2;
 	double result = 0.0;
 	// t*t
 	result += 2.*At*At * Q2s*(-Q2u)/std::pow(Q2t - mt2, 2);
