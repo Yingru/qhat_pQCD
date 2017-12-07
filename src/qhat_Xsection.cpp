@@ -34,8 +34,8 @@ QhatXsection::QhatXsection(double (*dXdPS_)(double* , size_t, void*), double (*a
 // ==== derived 2->2 QhatXsection class ========
 QhatXsection_2to2::QhatXsection_2to2(double (*dXdPS_)(double*, size_t, void*), double (*approx_X_)(double*, double), double M1_, std::string name_, bool refresh)
 :    QhatXsection(dXdPS_, approx_X_, M1_, name_, refresh),
-     Nsqrts(50), NT(32),
-     sqrtsL(M1_*1.01), sqrtsM(M1_*5.), sqrtsH(M1_*40.),
+     Nsqrts(70), NT(32),
+     sqrtsL(M1_*1.01), sqrtsM(M1_*5.), sqrtsH(140.),
      dsqrts1((sqrtsM-sqrtsL)/(Nsqrts-1.)), dsqrts2((sqrtsH - sqrtsM)/(Nsqrts - 1.)),
      TL(0.12), TH(0.8), dT((TH-TL)/(NT-1.)),
      QhatXtab(boost::extents[5][Nsqrts*2][NT])

@@ -8,14 +8,16 @@
 //=============running coupling=================================================
 double alpha_s(double Q2){
 
+    /*
     if (Q2 < Q2cut_l)
         return alpha0 / std::log( -Q2/Lambda2 );
     else if (Q2 <= Q2cut_h)
         return 1.0;
     else
         return alpha0 * ( .5 - std::atan( std::log(Q2/Lambda2)/M_PI ) / M_PI );
-
-//        return 0.3;
+    */
+    
+       return 0.3;
 }
 
 
