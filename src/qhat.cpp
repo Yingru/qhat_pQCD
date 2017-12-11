@@ -316,7 +316,25 @@ void Qhat_2to2::read_from_file(H5::H5File * file, std::string datasetname, int i
 }
 
 
+void Qhat_2to2::tabulate_E1_T(size_t T_start, size_t dnT)
+{
+    double *args = new double[4];
+    for (size_t i = 0; i<NE1; i++)
+    {
+        args[0] = E1L + i * dE1;
+        for (size_t j=T_start; j < (T_start + dnT); j++)
+        {
+            int qidx = 2;
+            args[1] = TL + j*dT;
+            args[3] = qidx;
+            args[2] = 0;
+            QhatTab[qidx][i][j] = calculate(args);
+        }
+    }
+    delete [] args;
+}
 
+/*
 void Qhat_2to2::tabulate_E1_T(size_t T_start, size_t dnT)
 {
         double *args = new double[4];
@@ -338,11 +356,10 @@ void Qhat_2to2::tabulate_E1_T(size_t T_start, size_t dnT)
                         //std::cout << args[0] << " " << args[1] << " " << QhatTab[0][i][j] << " " << QhatTab[1][i][j] << " " << QhatTab[2][i][j] << " " << QhatTab[3][i][j] << std::endl;         
                 }
         }
-
         
         delete [] args;
 }
-
+*/
 
 
 double Qhat_2to2::interpQ(double * args)
