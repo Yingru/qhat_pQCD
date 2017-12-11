@@ -25,9 +25,9 @@ protected:
         virtual void read_from_file(std::string filename, std::string datasetname) =0;
         double (*dXdPS)(double * PS, size_t ndims, void* params);
         double (*approx_X)(double *args, double M);
-        double M1;
+        double M1, Alpha_s;
 public:
-        QhatXsection(double (*dXdPS_)(double*, size_t, void*), double(*approx_X_)(double*, double), double M1_, std::string name_, bool refresh);
+        QhatXsection(double (*dXdPS_)(double*, size_t, void*), double(*approx_X_)(double*, double), double M1_,double Alpha_s_,  std::string name_, bool refresh);
         double get_M1(void) {return M1;};
         //args = [s, T, index] for X22
         virtual double interpX(double *args) = 0;
@@ -51,7 +51,7 @@ private:
                 TL, TH, dT;
         boost::multi_array<double, 3> QhatXtab;
 public:
-        QhatXsection_2to2(double (*dXdPS_)(double*, size_t, void*), double (*approx_X_)(double*, double), double M1_, std::string name_, bool refresh);
+        QhatXsection_2to2(double (*dXdPS_)(double*, size_t, void*), double (*approx_X_)(double*, double), double M1_, double Alpha_s_,  std::string name_, bool refresh);
         double interpX(double *args);
         double calculate(double *args);
 };

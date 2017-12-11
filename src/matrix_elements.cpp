@@ -16,7 +16,6 @@ double alpha_s(double Q2){
     else
         return alpha0 * ( .5 - std::atan( std::log(Q2/Lambda2)/M_PI ) / M_PI );
     */
-    
        return 0.3;
 }
 

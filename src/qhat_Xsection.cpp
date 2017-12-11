@@ -23,8 +23,8 @@ double gsl_1dfunc_wrapper_YX(double x, void *params_)
 
 
 // ===== QhatXsection base class
-QhatXsection::QhatXsection(double (*dXdPS_)(double* , size_t, void*), double (*approx_X_)(double*, double), double M1_, std::string name_, bool refresh)
-:  dXdPS(dXdPS_), approx_X(approx_X_), M1(M1_)
+QhatXsection::QhatXsection(double (*dXdPS_)(double* , size_t, void*), double (*approx_X_)(double*, double), double M1_, double Alpha_s_,  std::string name_, bool refresh)
+:  dXdPS(dXdPS_), approx_X(approx_X_), M1(M1_), Alpha_s(Alpha_s_)
 {
         std::cout << "--------" << __func__ << "  " << name_ << "--------" << std::endl;
 }
@@ -32,8 +32,8 @@ QhatXsection::QhatXsection(double (*dXdPS_)(double* , size_t, void*), double (*a
 
 
 // ==== derived 2->2 QhatXsection class ========
-QhatXsection_2to2::QhatXsection_2to2(double (*dXdPS_)(double*, size_t, void*), double (*approx_X_)(double*, double), double M1_, std::string name_, bool refresh)
-:    QhatXsection(dXdPS_, approx_X_, M1_, name_, refresh),
+QhatXsection_2to2::QhatXsection_2to2(double (*dXdPS_)(double*, size_t, void*), double (*approx_X_)(double*, double), double M1_, double Alpha_s_,  std::string name_, bool refresh)
+:    QhatXsection(dXdPS_, approx_X_, M1_, Alpha_s_, name_, refresh),
      Nsqrts(70), NT(32),
      sqrtsL(M1_*1.01), sqrtsM(M1_*5.), sqrtsH(140.),
      dsqrts1((sqrtsM-sqrtsL)/(Nsqrts-1.)), dsqrts2((sqrtsH - sqrtsM)/(Nsqrts - 1.)),
@@ -189,6 +189,7 @@ double QhatXsection_2to2::calculate(double* args)
         p[0] = s;
         p[1] = Temp;
         p[2] = M1;
+        p[3] = Alpha_s;
         p[3] = index;
 
         params->params = p;

@@ -1,8 +1,10 @@
 #include <iostream>
+#include <stdlib.h>
 #include <fstream>
 #include <vector>
 #include <cmath>
 #include <boost/multi_array.hpp>
+#include <boost/program_options.hpp>
 #include <H5Cpp.h>
 
 #include "matrix_elements.h"
@@ -12,23 +14,55 @@
 #include "qhat.h"
 #include "Langevin.h"
 
-
 using std::vector;
 
-int main()
+int main(int argc, char* argv[])
+{
+    double Mass, Alpha_s;
+    for (int i=1; i<argc; i++) {
+        if (! strcmp(argv[i], "-mass")) {
+             Mass = atof(argv[i+1]);
+             continue;
+        } else if (! strcmp(argv[i], "-alpha")) {
+            Alpha_s = atof(argv[i+1]);
+            continue;
+        }
+        std::cout << argv[i] << " " ;
+    }
+
+    std::cout << "Mass: " << Mass << " alpha_s: " << Alpha_s << std::endl;
+   
+    bool refresh = true;
+    Xsection_2to2 xQq2Qq(&dX_Qq2Qq_dPS, &approx_XQq2Qq, Mass, Alpha_s, "XQq2Qq.hdf5", refresh);
+    Xsection_2to2 xQg2Qg(&dX_Qg2Qg_dPS, &approx_XQg2Qg, Mass, Alpha_s, "XQg2Qg.hdf5", refresh);
+    rates_2to2 rQq2Qq(&xQq2Qq, 36, 0., "rQq2Qq.hdf5", refresh);
+    rates_2to2 rQg2Qg(&xQg2Qg, 16, 0., "rQg2Qg.hdf5", refresh);
+    QhatXsection_2to2 qhat_xQq2Qq(&dqhat_Qq2Qq_dPS, &approx_XQq2Qq, Mass, Alpha_s,  "qhat_XQq2Qq.hdf5", refresh);
+    QhatXsection_2to2 qhat_xQg2Qg(&dqhat_Qg2Qg_dPS, &approx_XQg2Qg, Mass, Alpha_s, "qhat_XQg2Qg.hdf5", refresh);
+    Qhat_2to2 qhatQq2Qq(&qhat_xQq2Qq, 36, 0., "qhat_Qq2Qq.hdf5", refresh);
+    Qhat_2to2 qhatQg2Qg(&qhat_xQg2Qg, 16, 0., "qhat_Qg2Qg.hdf5", refresh);
+    
+    return 0;
+}
+
+
+
+
+int main_bp()
 {
         double M = 1.3;
 
         double temp = 0.3;
 
         bool refresh = true;
-        Xsection_2to2 xQq2Qq(&dX_Qq2Qq_dPS, &approx_XQq2Qq, M, "XQq2Qq.hdf5", refresh);
-        Xsection_2to2 xQg2Qg(&dX_Qg2Qg_dPS, &approx_XQg2Qg, M, "XQg2Qg.hdf5", refresh);
+        double alpha_s = 0.3;
+        Xsection_2to2 xQq2Qq(&dX_Qq2Qq_dPS, &approx_XQq2Qq, M, alpha_s, "XQq2Qq.hdf5", refresh);
+        Xsection_2to2 xQg2Qg(&dX_Qg2Qg_dPS, &approx_XQg2Qg, M, alpha_s, "XQg2Qg.hdf5", refresh);
         rates_2to2 rQq2Qq(&xQq2Qq, 36, 0., "rQq2Qq.hdf5", refresh);
         rates_2to2 rQg2Qg(&xQg2Qg, 16, 0., "rQg2Qg.hdf5", refresh);
 
-        QhatXsection_2to2 qhat_xQq2Qq(&dqhat_Qq2Qq_dPS, &approx_XQq2Qq, M, "qhat_XQq2Qq.hdf5", refresh);
-        QhatXsection_2to2 qhat_xQg2Qg(&dqhat_Qg2Qg_dPS, &approx_XQg2Qg, M, "qhat_XQg2Qg.hdf5", refresh);
+        QhatXsection_2to2 qhat_xQq2Qq(&dqhat_Qq2Qq_dPS, &approx_XQq2Qq, M, alpha_s,  "qhat_XQq2Qq.hdf5", refresh);
+        QhatXsection_2to2 qhat_xQg2Qg(&dqhat_Qg2Qg_dPS, &approx_XQg2Qg, M, alpha_s,  "qhat_XQg2Qg.hdf5", refresh);
         Qhat_2to2 qhatQq2Qq(&qhat_xQq2Qq, 36, 0., "qhat_Qq2Qq.hdf5", refresh);
         Qhat_2to2 qhatQg2Qg(&qhat_xQg2Qg, 16, 0., "qhat_Qg2Qg.hdf5", refresh);
 

@@ -24,16 +24,16 @@ double gsl_1dfunc_wrapper(double x, void * params_){
 
 //=============Xsection base class===================================================
 // this is the base class for 2->2 and 2->3 cross-sections
-Xsection::Xsection(double (*dXdPS_)(double *, size_t, void *), double (*approx_X_)(double *, double), double M1_, std::string name_, bool refresh)
-: dXdPS(dXdPS_), approx_X(approx_X_), M1(M1_)
+Xsection::Xsection(double (*dXdPS_)(double *, size_t, void *), double (*approx_X_)(double *, double), double M1_, double Alpha_s_, std::string name_, bool refresh)
+: dXdPS(dXdPS_), approx_X(approx_X_), M1(M1_), Alpha_s(Alpha_s_)
 {
 	std::cout << "----------" << __func__ << " " << name_  << "----------" << std::endl;
 }
 
 
 //============Derived 2->2 Xsection class===================================
-Xsection_2to2::Xsection_2to2(double (*dXdPS_)(double *, size_t, void *), double (*approx_X_)(double *, double), double M1_, std::string name_, bool refresh)
-:	Xsection(dXdPS_, approx_X_, M1_, name_, refresh), rd(), gen(rd()), dist_phi3(0.0, 2.0*M_PI), 
+Xsection_2to2::Xsection_2to2(double (*dXdPS_)(double *, size_t, void *), double (*approx_X_)(double *, double), double M1_, double Alpha_s_, std::string name_, bool refresh)
+:	Xsection(dXdPS_, approx_X_, M1_, Alpha_s_, name_, refresh), rd(), gen(rd()), dist_phi3(0.0, 2.0*M_PI), 
 	Nsqrts(70), NT(32), 
 	sqrtsL(M1_*1.01), sqrtsM(M1_*5.), sqrtsH(140.), 
 	dsqrts1((sqrtsM-sqrtsL)/(Nsqrts-1.)), dsqrts2((sqrtsH-sqrtsM)/(Nsqrts-1.)),
@@ -148,10 +148,11 @@ double Xsection_2to2::calculate(double * arg){
 	gsl_integration_workspace *w = gsl_integration_workspace_alloc(1000);
 	Mygsl_integration_params * params = new Mygsl_integration_params;
 	params->f = dXdPS;
-	double * p = new double[3];
+	double * p = new double[4];
 	p[0] = s;
 	p[1] = Temp;
 	p[2] = M1;
+    p[3] = Alpha_s;
 	params->params = p;
 
     gsl_function F;
@@ -170,8 +171,8 @@ double Xsection_2to2::calculate(double * arg){
 
 void Xsection_2to2::sample_dXdPS(double * arg, std::vector< std::vector<double> > & FS){
 	double s = arg[0], Temp = arg[1];
-	double * p = new double[3]; //s, T, M
-	p[0] = s; p[1] = Temp;  p[2] = M1;
+	double * p = new double[4]; //s, T, M
+	p[0] = s; p[1] = Temp;  p[2] = M1; p[3] = Alpha_s;
 	double M2 = M1*M1;
 	double sqrts = std::sqrt(s);
 	double pQ = (s-M2)/2./sqrts;
@@ -192,8 +193,8 @@ void Xsection_2to2::sample_dXdPS(double * arg, std::vector< std::vector<double> 
 }
 
 //============Derived 2->3 Xsection class===================================
-Xsection_2to3::Xsection_2to3(double (*dXdPS_)(double *, size_t, void *), double (*approx_X_)(double *, double), double M1_, std::string name_, bool refresh)
-:	Xsection(dXdPS_, approx_X_, M1_, name_, refresh), rd(), gen(rd()), dist_phi4(0.0, 2.0*M_PI), 
+Xsection_2to3::Xsection_2to3(double (*dXdPS_)(double *, size_t, void *), double (*approx_X_)(double *, double), double M1_, double Alpha_s_, std::string name_, bool refresh)
+:	Xsection(dXdPS_, approx_X_, M1_, Alpha_s_, name_, refresh), rd(), gen(rd()), dist_phi4(0.0, 2.0*M_PI), 
 	Nsqrts(50), NT(16), Ndt(10), 
 	sqrtsL(M1_*1.01), sqrtsH(M1_*30.), dsqrts((sqrtsH-sqrtsL)/(Nsqrts-1.)),
 	TL(0.12), TH(0.8), dT((TH-TL)/(NT-1.)),
@@ -415,8 +416,8 @@ void Xsection_2to3::sample_dXdPS(double * arg, std::vector< std::vector<double> 
 // where p2 momentum fraction x2 = |p2|/(|p1| + |p2| + |k|)
 // and k momentum fraction xk = |k|/(|p1| + |p2| + |k|)
 
-f_3to2::f_3to2(double (*dXdPS_)(double *, size_t, void *), double (*approx_X_)(double *, double), double M1_, std::string name_, bool refresh)
-:	Xsection(dXdPS_, approx_X_, M1_, name_, refresh), rd(), gen(rd()), dist_phi4(0.0, 2.0*M_PI),
+f_3to2::f_3to2(double (*dXdPS_)(double *, size_t, void *), double (*approx_X_)(double *, double), double M1_, double Alpha_s_, std::string name_, bool refresh)
+:	Xsection(dXdPS_, approx_X_, M1_, Alpha_s_, name_, refresh), rd(), gen(rd()), dist_phi4(0.0, 2.0*M_PI),
 	Nsqrts(40), NT(8), Na1(20), Na2(20), 
 	sqrtsL(M1_*1.01), sqrtsH(M1_*30.), dsqrts((sqrtsH-sqrtsL)/(Nsqrts-1.)),
 	TL(0.12), TH(0.8), dT((TH-TL)/(NT-1.)),
