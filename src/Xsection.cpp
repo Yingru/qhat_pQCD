@@ -324,7 +324,7 @@ double Xsection_2to3::calculate(double * arg){
 	gsl_rng * r = gsl_rng_alloc(Tr);
 	
 	double * params = new double[4];
-	params[0] = s; params[1] = Temp; params[2] = M1; params[3] = dt;
+	params[0] = s; params[1] = Temp; params[2] = M1; params[3] = Alpha_s; params[4] = dt;
 	
 	gsl_monte_function G;
 	G.f = dXdPS; 
@@ -361,7 +361,7 @@ void Xsection_2to3::sample_dXdPS(double * arg, std::vector< std::vector<double> 
 	double * p = new double[4]; //s, T, dt, M
 	double sqrts = std::sqrt(s);
 	double M2 = M1*M1;
-	p[0] = s; p[1] = Temp; p[2] = M1; p[3] = dt; // dt in CoM frame
+	p[0] = s; p[1] = Temp; p[2] = M1; p[3] = Alpha_s;  p[4] = dt; // dt in CoM frame
 	size_t n_dims = 4;
 	double * guessl = new double[n_dims];
 	double * guessh = new double[n_dims];

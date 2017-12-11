@@ -14,7 +14,8 @@ double dqhat_Qq2Qq_dPS(double *PS, size_t n_dims, void *params)
         double* p = static_cast<double*>(params);
         // for 2->2 process p = {s, temp, M, index};
         double s = p[0], M2=p[2]*p[2];
-        int index = int(p[3]+0.5); // floor double p[3] into integer
+        double Alpha_s = p[3];
+        int index = int(p[4]+0.5); // floor double p[3] into integer
 
         double p10_CoM = (s + M2)/(2*std::sqrt(s));
         double p20_CoM = (s - M2)/(2*std::sqrt(s));
@@ -38,11 +39,12 @@ double dqhat_Qq2Qq_dPS(double *PS, size_t n_dims, void *params)
 //============Basic function for Q+g->Q+g
 double dqhat_Qg2Qg_dPS(double * PS, size_t n_dims, void * params)
 {
-	(void)n_dims;
-	double t = PS[0];
-	double * p = static_cast<double *>(params);
-	double s = p[0], M2 = p[2]*p[2];
-        int index = int(p[3]+0.5); // floor double p[3] into integer
+	    (void)n_dims;
+	    double t = PS[0];
+	    double * p = static_cast<double *>(params);
+	    double s = p[0], M2 = p[2]*p[2];
+        double Alpha_s = p[3];
+        int index = int(p[4]+0.5); // floor double p[3] into integer
 
         double p10_CoM = (s + M2)/(2*std::sqrt(s));
         double p20_CoM = (s - M2)/(2*std::sqrt(s));
@@ -56,7 +58,7 @@ double dqhat_Qg2Qg_dPS(double * PS, size_t n_dims, void * params)
         double q13_CoM = q1_CoM*q3_CoM;
 
         double vecq[] = {q1_CoM, q3_CoM, q11_CoM, q33_CoM, q13_CoM};
-	return M2_Qg2Qg(t, params)/c16pi/std::pow(s-M2, 2) * vecq[index];	
+	    return M2_Qg2Qg(t, params)/c16pi/std::pow(s-M2, 2) * vecq[index];	
 }
 
 

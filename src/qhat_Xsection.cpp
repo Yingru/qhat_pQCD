@@ -190,7 +190,7 @@ double QhatXsection_2to2::calculate(double* args)
         p[1] = Temp;
         p[2] = M1;
         p[3] = Alpha_s;
-        p[3] = index;
+        p[4] = index; 
 
         params->params = p;
 

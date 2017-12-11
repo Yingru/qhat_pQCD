@@ -8,15 +8,14 @@
 //=============running coupling=================================================
 double alpha_s(double Q2){
 
-    /*
     if (Q2 < Q2cut_l)
         return alpha0 / std::log( -Q2/Lambda2 );
     else if (Q2 <= Q2cut_h)
         return 1.0;
     else
         return alpha0 * ( .5 - std::atan( std::log(Q2/Lambda2)/M_PI ) / M_PI );
-    */
-       return 0.3;
+       
+       //return 0.3;
 }
 
 
@@ -31,10 +30,14 @@ double M2_Qq2Qq(double t, void * params){
 	// unpacking parameters
 	double * p = static_cast<double*>(params);
 	double s = p[0], T2 = p[1]*p[1], M2 = p[2]*p[2];
+    double Alpha_s = p[3];
 	// define energy scales for each channel
 	double Q2s = s - M2, Q2t = t, Q2u = M2 - s - t;
 	// define coupling constant for each channel
-	double At = alpha_s(Q2t);
+	//double At = alpha_s(Q2t);
+    double At = Alpha_s;
+
+    // debug: std::cout << "matrix elements Qq2Qq (coupling) : " << At << std::endl;
 	// define Deybe mass for each channel
 	// Ours  double mt2 = 0.2*At*pf_g*T2;
      double mt2 = 4 * M_PI * At * T2;
@@ -62,10 +65,14 @@ double M2_Qg2Qg(double t, void * params) {
 	// unpacking parameters
 	double * p = static_cast<double *>(params);
 	double s = p[0], T2 = p[1]*p[1], M2 = p[2]*p[2];
+    double Alpha_s = p[3];
 	// define energy scales for each channel
 	double Q2s = s - M2, Q2t = t, Q2u = M2 - s - t;
 	// define coupling constant for each channel
-	double At = alpha_s(Q2t), Au = alpha_s(Q2u), As = alpha_s(Q2s);
+	//double At = alpha_s(Q2t), Au = alpha_s(Q2u), As = alpha_s(Q2s);
+    double At = Alpha_s, Au = Alpha_s, As = Alpha_s;
+
+    // debug std::cout << "matrix elements Qg2Qg (couling) : " << At << " " << Au << " " << As << std::endl;
 	// define Deybe mass for each channel
  	// ours double mt2 = 0.2*At*pf_g*T2, mu2 = Au*pf_q*T2, ms2 = As*pf_q*T2;
     double mt2 = 4*M_PI*At*T2, mu2 = 4*M_PI*Au*T2, ms2 = 4*M_PI*As*T2;
@@ -90,11 +97,13 @@ double M2_Qg2Qg(double t, void * params) {
 double M2_Qg2Qg_only_t(double t, void * params) {
 	// unpacking parameters
 	double * p = static_cast<double *>(params);
-	double s = p[0], T2 = p[1]*p[1], M2 = p[2]*p[2];
+	double s = p[0], T2 = p[1]*p[1], M2 = p[2]*p[2], Alpha_s = p[3];
 	// define energy scales for each channel
 	double Q2s = s - M2, Q2t = t, Q2u = M2 - s - t;
 	// define coupling constant for each channel
-	double At = alpha_s(Q2t);
+	//double At = alpha_s(Q2t);
+    double At = Alpha_s;
+
 	// define Deybe mass for each channel
 	double mt2 = 0.2*At*pf_g*T2;
 	double result = c16pi2*2.*At*At * Q2s*(-Q2u)/std::pow(Q2t - mt2, 2);
