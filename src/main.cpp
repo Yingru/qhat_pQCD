@@ -20,10 +20,10 @@ int main(int argc, char* argv[])
 {
     double Mass, Alpha_s;
     for (int i=1; i<argc; i++) {
-        if (! strcmp(argv[i], "-mass")) {
+        if (! strcmp(argv[i], "--mass")) {
              Mass = atof(argv[i+1]);
              continue;
-        } else if (! strcmp(argv[i], "-alpha")) {
+        } else if (! strcmp(argv[i], "--alpha")) {
             Alpha_s = atof(argv[i+1]);
             continue;
         }

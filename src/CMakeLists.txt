@@ -23,7 +23,8 @@ target_link_libraries(${PROJECT_NAME} ${LIBRARY_NAME}  ${GSL_LIBRARIES} ${GSLCAL
 # install executable
 install(TARGETS ${PROJECT_NAME} DESTINATION ${PROJECT_NAME})
 # also install the generated c++ shared library
-install(TARGETS ${LIBRARY_NAME} DESTINATION lib/${LIBRARY_NAME})
+#install(TARGETS ${LIBRARY_NAME} DESTINATION lib/${LIBRARY_NAME})
 # install the library headers
-file(GLOB HEADERS *.h)
-install(FILES ${HEADERS} DESTINATION include/${LIBRARY_NAME})
+
+#file(GLOB HEADERS *.h)
+#install(FILES ${HEADERS} DESTINATION include/${LIBRARY_NAME})
