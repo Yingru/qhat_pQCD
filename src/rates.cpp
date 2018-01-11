@@ -162,15 +162,15 @@ rates_2to2::rates_2to2(Xsection_2to2 * Xprocess_, int degeneracy_, double eta_2_
 	if ( (!fileexist) || ( fileexist && refresh) ){
 		std::cout << "Populating table with new calculation" << std::endl;
 		std::vector<std::thread> threads;
-		size_t Ncores = std::thread::hardware_concurrency();
-		size_t call_per_core = std::ceil(NT*1./Ncores);
-		size_t call_for_last_core = NT - call_per_core*(Ncores-1);
-		for (size_t i=0; i< Ncores ; i++){	
-			size_t Nstart = i*call_per_core;
-			size_t dN = (i==Ncores-1)? call_for_last_core : call_per_core;
-			auto code = [this](size_t NTstart_, size_t dNT_) { this->tabulate_E1_T(NTstart_, dNT_); };
-			threads.push_back( std::thread(code, Nstart, dN) );
-		}
+		size_t Ncores = std::min(size_t(std::thread::hardware_concurrency()), NT);
+        size_t call_per_core = size_t(NT*1./Ncores);
+	    size_t call_for_last_core = NT - call_per_core*(Ncores-1);
+	    for (size_t i=0; i< Ncores ; i++){	
+		    size_t Nstart = i*call_per_core;
+		    size_t dN = (i==Ncores-1)? call_for_last_core : call_per_core;
+		    auto code = [this](size_t NTstart_, size_t dNT_) { this->tabulate_E1_T(NTstart_, dNT_); };
+		    threads.push_back( std::thread(code, Nstart, dN) );
+	    }
 		for (std::thread& t : threads)	t.join();
 
 		H5::H5File file(name_, H5F_ACC_TRUNC);
@@ -362,15 +362,16 @@ rates_2to3::rates_2to3(Xsection_2to3 * Xprocess_, int degeneracy_, double eta_2_
 	if ( (!fileexist) || ( fileexist && refresh) ){
 		std::cout << "Populating table with new calculation" << std::endl;
 		std::vector<std::thread> threads;
-		size_t Ncores = std::thread::hardware_concurrency();
-		size_t call_per_core = std::ceil(NT*1./Ncores);
-		size_t call_for_last_core = NT - call_per_core*(Ncores-1);
-		for (size_t i=0; i< Ncores ; i++){	
-			size_t Nstart = i*call_per_core;
-			size_t dN = (i==Ncores-1)? call_for_last_core : call_per_core;
-			auto code = [this](size_t NTstart_, size_t dNT_) { this->tabulate_E1_T(NTstart_, dNT_); };
-			threads.push_back( std::thread(code, Nstart, dN) );
-		}
+		size_t Ncores = std::min(size_t(std::thread::hardware_concurrency()), NT);
+	    size_t call_per_core = size_t(NT*1./Ncores);
+	    size_t call_for_last_core = NT - call_per_core*(Ncores-1);
+        std::cout << "Ncores: " << Ncores << " call_per_core: " << call_per_core << " call_for_last_core: " << call_for_last_core << std::endl;
+	    for (size_t i=0; i< Ncores ; i++){	
+		    size_t Nstart = i*call_per_core;
+		    size_t dN = (i==Ncores-1)? call_for_last_core : call_per_core;
+		    auto code = [this](size_t NTstart_, size_t dNT_) { this->tabulate_E1_T(NTstart_, dNT_); };
+		    threads.push_back( std::thread(code, Nstart, dN) );
+	    }
 		for (std::thread& t : threads)	t.join();
 		H5::H5File file(name_, H5F_ACC_TRUNC);
 		save_to_file(&file, "Rates-tab", 0);
@@ -545,15 +546,15 @@ rates_3to2::rates_3to2(f_3to2 * Xprocess_, int degeneracy_, double eta_2_, doubl
 	if ( (!fileexist) || ( fileexist && refresh) ){
 		std::cout << "Populating table with new calculation" << std::endl;
 		std::vector<std::thread> threads;
-		size_t Ncores = std::thread::hardware_concurrency();
-		size_t call_per_core = std::ceil(NT*1./Ncores);
-		size_t call_for_last_core = NT - call_per_core*(Ncores-1);
-		for (size_t i=0; i< Ncores ; i++){	
-			size_t Nstart = i*call_per_core;
-			size_t dN = (i==Ncores-1)? call_for_last_core : call_per_core;
-			auto code = [this](size_t NTstart_, size_t dNT_) { this->tabulate_E1_T(NTstart_, dNT_); };
-			threads.push_back( std::thread(code, Nstart, dN) );
-		}
+		size_t Ncores = std::min(size_t(std::thread::hardware_concurrency()), NT);
+	    size_t call_per_core = size_t(NT*1./Ncores);
+	    size_t call_for_last_core = NT - call_per_core*(Ncores-1);
+	    for (size_t i=0; i< Ncores ; i++){	
+		    size_t Nstart = i*call_per_core;
+		    size_t dN = (i==Ncores-1)? call_for_last_core : call_per_core;
+		    auto code = [this](size_t NTstart_, size_t dNT_) { this->tabulate_E1_T(NTstart_, dNT_); };
+		    threads.push_back( std::thread(code, Nstart, dN) );
+        }
 		for (std::thread& t : threads)	t.join();
 		
 		H5::H5File file(name_, H5F_ACC_TRUNC);
