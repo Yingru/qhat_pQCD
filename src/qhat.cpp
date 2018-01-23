@@ -212,7 +212,7 @@ Qhat::Qhat(std::string name_)
 Qhat_2to2::Qhat_2to2(QhatXsection_2to2 * Xprocess_, int degeneracy_, double eta_2_, std::string name_, bool refresh)
 :  Qhat(name_), Xprocess(Xprocess_), M(Xprocess->get_M1()),
    degeneracy(degeneracy_), eta_2(eta_2_),
-   NE1(51), NT(31), E1L(M*1.01), E1H(140), TL(0.15), TH(0.75),
+   NE1(101), NT(31), E1L(M*1.01), E1H(140), TL(0.15), TH(0.75),
    dE1((E1H - E1L)/(NE1 -1.)), dT((TH - TL)/(NT -1.)),
    QhatTab(boost::extents[4][NE1][NT]),
    Qhat1Tab(boost::extents[4][NE1][NT]),
