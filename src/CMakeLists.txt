@@ -21,7 +21,9 @@ add_executable(${PROJECT_NAME} main.cpp)
 target_link_libraries(${PROJECT_NAME} ${LIBRARY_NAME}  ${GSL_LIBRARIES} ${GSLCALAS_LIBRARIES} ${HDF5_LIBRARIES} ${Boost_LIBRARIES} -pthread -lpthread)
 
 # install executable
-install(TARGETS ${PROJECT_NAME} DESTINATION ${PROJECT_NAME})
+#install(targets ${project_name} destination ${project_name})
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+
 # also install the generated c++ shared library
 #install(TARGETS ${LIBRARY_NAME} DESTINATION lib/${LIBRARY_NAME})
 # install the library headers
